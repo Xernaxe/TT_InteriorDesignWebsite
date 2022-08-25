@@ -7,31 +7,9 @@ const projects = 12;
 let projectsCategory;
 
 const apiUrl = 'https://vmadev.com/wp-json/wp/v2/';
-const apiUserCredentials = {
-	username: hidden, /////// hidden
-	password: hidden /////// hidden
-};
-loadPage();
-function loadPage() {
-	fetch('https://vmadev.com/wp-json/jwt-auth/v1/token', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(apiUserCredentials),
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			window.localStorage.setItem('authToken', data.data.token);
-			renderPage();
-		});
-}
 const renderPage = function () {
-	fetch(`${apiUrl}posts?status=private&categories=${projects}&per_page=100`, {
+	fetch(`${apiUrl}posts?categories=${projects}&per_page=100`, {
 		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${window.localStorage.getItem('authToken')}`,
-		},
 	})
 		.then((response) => response.json())
 		.then((data) => {
@@ -290,3 +268,5 @@ const renderPage = function () {
 			});
 		});
 };
+
+renderPage();
